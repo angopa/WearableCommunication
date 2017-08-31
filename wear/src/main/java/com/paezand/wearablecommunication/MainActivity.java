@@ -32,6 +32,9 @@ public class MainActivity extends Activity
 
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
 
+        if (googleApiClient == null) {
+            initializeForLocationRequests();
+        }
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(googleApiClient, putDataRequest);
     }
 
@@ -54,4 +57,14 @@ public class MainActivity extends Activity
     public void onDataChanged(DataEventBuffer dataEventBuffer) {
 
     }
+
+    private void initializeForLocationRequests() {
+
+        googleApiClient = new GoogleApiClient.Builder(getApplication())
+                .addApi(Wearable.API)
+                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
+                .build();
+    }
+
 }
